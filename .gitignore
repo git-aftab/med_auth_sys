@@ -52,7 +52,6 @@ static/uploads/
 tmp/
 temp/
 
-models/
 checkpoints/
 *.pt
 *.pth
