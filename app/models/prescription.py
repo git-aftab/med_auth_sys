@@ -1,12 +1,12 @@
 from sqlalchemy import Boolean, ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
 class Prescription(Base):
-    __tablename__ = "Prescriptions" 
+    __tablename__ = "prescriptions" 
 
-    id: Mapped[int]= mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     patient_id: Mapped[int] = mapped_column(
         ForeignKey("patients.id")   
@@ -20,3 +20,13 @@ class Prescription(Base):
     frequency: Mapped[str] = mapped_column(String(100))
 
     active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    patient = relationship(
+        "Patient",
+        back_populates="prescriptions"
+    )
+
+    medication = relationship(
+        "Medication",
+        back_populates="prescriptions"
+    )

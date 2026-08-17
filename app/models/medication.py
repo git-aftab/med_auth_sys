@@ -1,5 +1,6 @@
+from typing import Optional
 from sqlalchemy import Float, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -8,10 +9,16 @@ class Medication(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
     strength: Mapped[str] = mapped_column(String(50))
+    epillid_class_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
 
     color: Mapped[str] = mapped_column(String(50))
     shape: Mapped[str] = mapped_column(String(50))
     size_mm: Mapped[float] = mapped_column(Float)
 
     reference_weight_g: Mapped[float] = mapped_column(Float)
-    weight_tolerence_g: Mapped[float] = mapped_column(Float)
+    weight_tolerance_g: Mapped[float] = mapped_column(Float)
+
+    prescriptions = relationship(
+        "Prescription",
+        back_populates="medication"
+    )

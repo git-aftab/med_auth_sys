@@ -60,3 +60,6 @@ checkpoints/
 *.safetensors
 
 .cache/
+
+*ePillID*
+*epillID*

@@ -7,14 +7,14 @@ class Patient(Base):
     __tablename__ = "patients"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String[100])
-    rfid_uid: Mapped[str]= mapped_column(
+    name: Mapped[str] = mapped_column(String(100))
+    rfid_uid: Mapped[str] = mapped_column(
         String(100),
         unique=True,
         index=True
     )
 
     prescriptions = relationship(
-        "prescription",
+        "Prescription",
         back_populates="patient"
     )

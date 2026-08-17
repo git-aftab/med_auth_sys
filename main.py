@@ -1,21 +1,42 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.base import Base
 from app.database.db import engine
+import app.models  # Ensures all ORM models are registered
 
-from app.models.patient import Patient
-from app.models.medication import Medication
-from app.models.prescription import Prescription
+from app.routes import patients, medications, verifications, ws
 
+# Initialize database tables on startup if not already created
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Medication Authentication System")
+app = FastAPI(
+    title="Multi-Factor Patient & Medication Authentication System",
+    version="1.0.0",
+    description="Backend API and Real-Time Nurse Dashboard WebSocket Service",
+)
+
+# Enable CORS for Nurse Dashboard & Edge Devices
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register API Routers
+app.include_router(patients.router)
+app.include_router(medications.router)
+app.include_router(verifications.router)
+app.include_router(ws.router)
 
 
 @app.get("/")
-def hello_world():
-    return {"message": "Medication Authentication Backend is running"}
+def root():
+    return {"message": "Multi-Factor Patient & Medication Authentication System API is running"}
+
 
 @app.get("/health")
-def healthceck():
-    return "Server is running fine"
+def healthcheck():
+    return {"status": "healthy", "service": "Patient_MEDS_Sys"}
