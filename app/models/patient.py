@@ -1,5 +1,5 @@
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -12,4 +12,9 @@ class Patient(Base):
         String(100),
         unique=True,
         index=True
+    )
+
+    prescriptions = relationship(
+        "prescription",
+        back_populates="patient"
     )
