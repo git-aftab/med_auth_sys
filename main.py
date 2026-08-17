@@ -5,7 +5,7 @@ from app.database.base import Base
 from app.database.db import engine
 import app.models  # Ensures all ORM models are registered
 
-from app.routes import patients, medications, verifications, ws
+from app.routes import patients, medications, verifications, ws, rfid, camera
 
 # Initialize database tables on startup if not already created
 Base.metadata.create_all(bind=engine)
@@ -26,6 +26,8 @@ app.add_middleware(
 )
 
 # Register API Routers
+app.include_router(rfid.router)
+app.include_router(camera.router)
 app.include_router(patients.router)
 app.include_router(medications.router)
 app.include_router(verifications.router)
